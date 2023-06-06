@@ -4,7 +4,7 @@ var todaysWeather = $('#weather-container');
 var fiveDay = $('five-day');
 
 
-function getApi() {
+function getApi(date) {
   // Declare variable for the weather api URL using personal key
   var requestURL = "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={6de9315fe02ad136b310b6c68d6d0811}";
 
@@ -38,30 +38,39 @@ function getApi() {
   })
 }
 
-function displayWeather() {
+// function displayWeather() {
+//   // Pulls weather forecasts from the api
+//   getApi();
 
-  // pull current day's weather
-  // display current day weather in weatherContainer
-
-}
-
-function displayFiveDay(data) {
-  // not sure if i include data as a parameter here
-
-  // pull first five days info from api
-
-
-
-}
+//   // display current day weather in weatherContainer
+//   // display 5 day weather in fiveDay
+// }
 
 function autofillSearch() {
-  
+
+  // Create a dropdown of cities to select from
+  // User input must match an available dropdown item
+  // these items are pulled from the api
+}
+
+function searchHandler(event) {
+  event.preventDefault();
+
+  var input = $('#city-input');
+  var cityInput = input.value.trim();
+
+  if (cityInput) {
+    displayWeather();
+  } else {
+    return;
+  }
+
 }
 
 // Event Listener on search button
 var searchBtn = $('#search-button');
-searchBtn.on("click", displayWeather)
+searchBtn.on("click", searchHandler);
 
-// HOW I COULD MAKE MY APP BETTER:
+// HOW TO MAKE THIS APP BETTER IN THE FUTURE:
 // - Add "previous day" & "next day" buttons on the bottom of today's forecast
-// - 
+// - Add ZIPCODE option (convert to coordinates?)
