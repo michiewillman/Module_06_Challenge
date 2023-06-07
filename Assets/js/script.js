@@ -17,54 +17,60 @@ function getApi() {
   .then(function(data) {
 
     for (var i = 0; i < data.length; i++) {
+      // Add icons 
+      var iconDiv = $('.card-icon');
+      iconDiv.val(data[i]);
 
-      displayWeather(data);
+      if (i === 0) {
+        // Display current day weather in weatherContainer
+        var mainCityDiv = $('#main-city');
+        var currentDateDiv = $('#current-date');
+        var currentDate = dayjs().format('DD/MM/YYYY');
+        var cityTempDiv = $('.city-temp');
+        var cityWindDiv = $('.city-wind');
+        var cityHumidDiv = $('.city-humidity');
+
+        mainCityDiv.val(data[i].city.name);
+        cityTempDiv.va();
+        cityWindDiv.va();
+        cityHumidDiv.val();
+
+        console.log(currentDate);
+        currentDateDiv.val(currentDate);
+
+      } else if (i > 0) {
+        // Create the elements for data to go in on each card
+        var cardDate = $('.card-date');s
+        var cardTemp = $('.card-temp');
+        var cardWind = $('.card-temp');
+        var cardHumidity = $('.card-temp');
+
+        // Add values to divs
+        cardDate.textContent = data[i].list.dt;
+        cardIcon.textContent = data[i].list.weather.icon;
+        cardTemp.val(data[i].list.main.temp);
+        cardWind.val(data[i].list.wind.speed);
+        cardHumidity.val(data[i].list.main.humidity);
+
+
+      }
 
       // TODO: figure out how to store this info to use later... in an object array?
-      
 
+      return;
     }
 
   })
 }
 
-function displayWeather(data) {
 
-
-  // display current day weather in weatherContainer
-  $('#main-city').val(cityName);
-  var currentDate = dayjs().format('DD/MM/YYYY');
-  console.log(currentDate);
-  $('#current-date').val(currentDate);
-
-  // Create the elements for data to go in on each card
-  var cardDate = $('.card-date');
-  var cardTemp = $('.card-temp');
-  var cardWind = $('.card-temp');
-  var cardHumidity = $('.card-temp');
-
-  cardTemp.val(data[i].list[1].temp);
-  cardWind.val(data[i].list[4].wind.speed);
-  cardHumidity.val(data[i].list[1].humidity);
-
-  // Add values to divs
-  cardDate.textContent = data[i].list.dt;
-  cardIcon.textContent = data[i].list[2].icon;
-
-
-  // Add icons 
-  var iconDiv = $('.card-icon');
-  iconDiv.val(data[i]);
-}
-
-function autofillSearch() {
-  // Create a dropdown of cities to select from
-  // User input must match an available dropdown item
-  // these items are pulled from the api
-
-  var availCities = 
-
-}
+// Autocomplete widget for city name
+$(function () {
+  var availCities = [];
+  $('#city-input').autocomplete({
+    source: availCities,
+  });
+});
 
 function searchHandler(event) {
   event.preventDefault();
@@ -72,7 +78,7 @@ function searchHandler(event) {
   var city = $('#city-input').val();
 
   if (city) {
-    displayWeather(city, weather);
+    getApi();
   } else {
     return;
   }
