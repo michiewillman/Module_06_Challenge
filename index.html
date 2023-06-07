@@ -16,9 +16,9 @@
 
     <div>
       <div id="search-form">
-        <label for=""></label>
+        <label for="city-input">Search for a city</label> 
         <input id="city-input" type="text" placeholder="ex: Portland, OR">
-        <button class="btn search-button"></button>
+        <button class="btn search-button">Search</button>
       </div>
     </div>
 
@@ -27,14 +27,21 @@
   <section id="weather-container">
 
     <div id="city-info">
-      <!-- Use dayjs to grab the current date & time -->
+      <!-- TODO: Use dayjs to grab the current date & time -->
       <h4 id="main-city"></h4>
       <p id="current-date"></p>
+      <i class="card-icon"></i>
+      <ul>
+        <li class="city-temp"></li>
+        <li class="city-wind"></li>
+        <li class="city-humidity"></li>
+      </ul>
     </div>
 
     <div id="five-day">
       <div class="card">
         <h5 class="card-date"></h5>
+        <i class="card-icon"></i>
         <div class="card-details">
           <ul>
             <li class="card-temp"></li>
@@ -46,6 +53,7 @@
 
       <div class="card">
         <h5 class="card-date"></h5>
+        <i class="card-icon"></i>
         <div class="card-details">
           <ul>
             <li class="card-temp"></li>
@@ -57,6 +65,7 @@
 
       <div class="card">
         <h5 class="card-date"></h5>
+        <i class="card-icon"></i>
         <div class="card-details">
           <ul>
             <li class="card-temp"></li>
@@ -68,6 +77,7 @@
 
       <div class="card">
         <h5 class="card-date"></h5>
+        <i class="card-icon"></i>
         <div class="card-details">
           <ul>
             <li class="card-temp"></li>
@@ -79,6 +89,7 @@
 
       <div class="card">
         <h5 class="card-date"></h5>
+        <i class="card-icon"></i>
         <div class="card-details">
           <ul>
             <li class="card-temp"></li>

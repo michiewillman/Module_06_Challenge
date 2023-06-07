@@ -1,0 +1,47 @@
+/* Global styles */
+:root {
+  --snow: #ffffff;
+  --primary: blue;
+  --secondary: ;
+  --light: ;
+  --dark: ;
+}
+
+header {
+  color: var(--snow);
+  background-color: var(--primary);
+}
+
+li {
+  list-style: none;
+}
+
+/* Search Section */
+.search-button {
+  width: 200px;
+  height: 30px;
+  border-radius: 25px;
+  /* padding: 20px; */
+}
+
+.search-button:hover {
+  color: var(--primary);
+  background-color: var(--secondary);
+}
+
+/* Current Day - Main Weather Section */
+
+
+/* Five Day Forecast Section */
+#five-day {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  color: #ffffff;
+  background-color: blueviolet;
+  flex: 0 0 200px;
+  padding: 20px;
+  margin: 10px;
+}
