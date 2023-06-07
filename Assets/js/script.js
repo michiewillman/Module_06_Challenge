@@ -6,14 +6,10 @@ var fiveDay = $('five-day');
 
 function getApi(date) {
   // Declare variable for the weather api URL using personal key
-  var requestURL = "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={6de9315fe02ad136b310b6c68d6d0811}";
+  var requestURL = "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={6de9315fe02ad136b310b6c68d6d0811}?per_page=6";
 
 
-  // figure out how to filter search by first 6 dates of weather
-
-  // fetch to call Weather API
-  // if response comes back ok --> parse to JSON
-  // then act on the data
+  // Make a call to the api for weather information
   fetch (requestURL)
   .then(function (response) {
     return response.json();
@@ -22,29 +18,33 @@ function getApi(date) {
 
     for (var i = 0; i < data.length; i++) {
       // Create the elements for data to go in on each card
-      var cardDate = document.createElement('h5');
-      var cardDetails = document.createElement('p');
-      cardDate.classList('card-date');
-      cardDetails.classList('card-details');
-  
-      // nameDiv.textContent = data[i].login;
-      // urlDiv.textContent = data[i].url;
-  
-      // Append the elements to the five day weather container
-      fiveDay.append(cardDate);
-      fiveDay.append(cardDetails);
+      var dateDiv = $('.card-date');
+      var iconDiv = $('.card-icon');
+      var detailsDiv = $('.card-details');
+
+      cardDate.textContent = data[i].list.dt;
+      cardIcon.textContent = data[i].list[2].icon;
+
+      var cardTemp = data[i].list[1].temp;
+      var cardWind = data[i].list[4].wind.speed;
+      var cardHumidity = data[i].list[1].humidity;
+      
+
+      // TODO: figure out how to store this info to use later... in an object array?
+      
+
     }
 
   })
 }
 
-// function displayWeather() {
-//   // Pulls weather forecasts from the api
-//   getApi();
+function displayWeather() {
+  // Pulls weather forecasts from the api
+  getApi();
 
-//   // display current day weather in weatherContainer
-//   // display 5 day weather in fiveDay
-// }
+  // display current day weather in weatherContainer
+  // display 5 day weather in fiveDay
+}
 
 function autofillSearch() {
 
@@ -57,13 +57,16 @@ function searchHandler(event) {
   event.preventDefault();
 
   var input = $('#city-input');
-  var cityInput = input.value.trim();
+  var city = input.value.trim();
 
-  if (cityInput) {
+  if (city) {
     displayWeather();
   } else {
     return;
   }
+
+  // TODO: Save city search to local storage
+
 
 }
 
@@ -71,6 +74,11 @@ function searchHandler(event) {
 var searchBtn = $('#search-button');
 searchBtn.on("click", searchHandler);
 
+// TODO: Render last saved city search on page load
+
+
+
 // HOW TO MAKE THIS APP BETTER IN THE FUTURE:
 // - Add "previous day" & "next day" buttons on the bottom of today's forecast
 // - Add ZIPCODE option (convert to coordinates?)
+
