@@ -1,14 +1,20 @@
 /* Global styles */
 :root {
-  --snow: #ffffff;
-  --primary: blue;
-  --secondary: ;
-  --light: ;
-  --dark: #212529;
+  --light: #e2e9f0;
+  --dark: #2F3240;
+  --primary: #C84A26;
+  --secondary: #DF8C27;
+  --tan: #efd5a6;
+  --mauve: #CFC5C5;
+  --teal: #4F8484;
+}
+
+body {
+  background-color: var(--light);
 }
 
 header {
-  color: var(--snow);
+  color: var(--light);
   background: rgb(223,142,38);
   background: linear-gradient(270deg, rgba(223,142,38,1) 0%, rgba(200,38,38,1) 100%);
 }
@@ -22,16 +28,21 @@ li {
   width: 200px;
   height: 30px;
   border-radius: 25px;
-  /* padding: 20px; */
+  border: none;
+  color: var(--light);
+  background-color: var(--teal);
 }
 
 .search-button:hover {
-  color: var(--primary);
-  background-color: var(--secondary);
+  background-color: #436f6f;
 }
 
 /* Current Day - Main Weather Section */
-
+#city-info {
+  color: var(--light);
+  background-color: var(--teal);
+  border-radius: 10px;
+}
 
 /* Five Day Forecast Section */
 #five-day {
@@ -40,7 +51,7 @@ li {
 }
 
 .card {
-  color: var(--snow);
+  color: var(--light);
   background-color: var(--dark);
   border-radius: 10px;
   flex: 0 0 200px;
