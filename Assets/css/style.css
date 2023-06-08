@@ -4,12 +4,13 @@
   --primary: blue;
   --secondary: ;
   --light: ;
-  --dark: ;
+  --dark: #212529;
 }
 
 header {
   color: var(--snow);
-  background-color: var(--primary);
+  background: rgb(223,142,38);
+  background: linear-gradient(270deg, rgba(223,142,38,1) 0%, rgba(200,38,38,1) 100%);
 }
 
 li {
@@ -39,8 +40,9 @@ li {
 }
 
 .card {
-  color: #ffffff;
-  background-color: blueviolet;
+  color: var(--snow);
+  background-color: var(--dark);
+  border-radius: 10px;
   flex: 0 0 200px;
   padding: 20px;
   margin: 10px;
