@@ -1,5 +1,4 @@
 // Global variables
-var searchContainer = $('#search-form');
 var cityInput = $('#city-input');
 
 function getCoordinates(city) {
@@ -32,7 +31,6 @@ function getToday(lat, lon) {
     }
   });
 }
-
 
 function getForecast(lat, lon) {
   // Make a call to the api for weather information
@@ -109,11 +107,12 @@ function searchHandler(event) {
 }
 
 function renderLastCity() {
-  var saved = localStorage.getItem('savedCities');
-  if (saved) {
-    // parse
+  var saved = JSON.parse(localStorage.getItem('savedCities'));
+  if (saved !== null) {
     // run display weather
-    // 
+    for (i = 0; i < 6; i++) {
+      
+    }
   } else {
     // create empty array
   }
@@ -126,8 +125,3 @@ searchBtn.on("click", searchHandler);
 
 // Render last saved city search on page load
 // renderLastCity();
-
-
-// HOW TO MAKE THIS APP BETTER IN THE FUTURE:
-// - Add an error message when a user doesn't input a city but clicks search button
-// - Add "previous day" & "next day" buttons on the bottom of today's forecast
