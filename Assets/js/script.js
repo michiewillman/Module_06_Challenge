@@ -51,31 +51,26 @@ function getForecast(lat, lon) {
   });
 }
 
-function displayToday(weather) {
+function displayToday(todays) {
   // // Display Weather Today
   var currentDate = dayjs().format('DD/MM/YYYY');
-  $('#current-date').text = currentDate;
-
-  var iconImg = $('.card-icon').siblings();
-  var conditionIcon = weather.icon;
-  var iconUrl = "http://openweathermap.org/img/w/" + conditionIcon + ".png";
-  iconImg.attr("src", iconUrl.toString()) // TODO: Get icon to work properly
+  $('#current-date').text(currentDate);
  
-  $('#main-city').text("Today's Weather for " + weather.name);
-  $('#current-temp').text("Temp: " + Math.floor(weather.main.temp) + " °F");
-  $('#current-wind').text("Wind: " + Math.floor(weather.wind.speed) + " MPH");
-  $('#current-humidity').text("Humidity: " + Math.floor(weather.main.humidity));
+  $('#main-city').text("Today's Weather for " + todays.name);
+  $('#current-icon').attr("src", "http://openweathermap.org/img/wn/" + todays.weather[0].icon + "@2x.png");
+  $('#current-temp').text("Temp: " + Math.floor(todays.main.temp) + " °F");
+  $('#current-wind').text("Wind: " + Math.floor(todays.wind.speed) + " MPH");
+  $('#current-humidity').text("Humidity: " + Math.floor(todays.main.humidity));
 }
 
 function displayForecast(data) {
   // Display 5-Day Forecast
   for (var i = 0; i < data.list.length; i+=8) {
-
     var fiveDay = $('#five-day');
     var card = $('<div>');
     card.addClass('card');
     var cardDate = $('<h5>');
-    var cardIcon = $('<i>');
+    var cardIcon = $('<img>');
     var cardDetails = $('<div>');
     var detailList = $('<ul>');
     var cardTemp = $('<li>');
@@ -89,10 +84,10 @@ function displayForecast(data) {
 
     // Fill content for 5-day forecast cards
     cardDate.text(data.list[i].dt); // TODO: Get timestamp in regular MM/DD/YYYY format
+    cardIcon.attr("src", "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png")
     cardTemp.text("Temp: " + Math.floor(data.list[i].main.temp) + " °F");
     cardWind.text("Wind: " + Math.floor(data.list[i].wind.speed) + " MPH");
     cardHumidity.text("Humidity: " + Math.floor(data.list[i].main.humidity));
-
   }
 }
 

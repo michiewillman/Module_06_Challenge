@@ -24,8 +24,12 @@ li {
 }
 
 /* Search Section */
+#city-input {
+  width: 140px;
+}
+
 .search-button {
-  width: 200px;
+  width: 140px;
   height: 30px;
   border-radius: 25px;
   border: none;
@@ -44,6 +48,10 @@ li {
   border-radius: 10px;
 }
 
+#city-info img {
+  width: 70px;
+}
+
 /* Five Day Forecast Section */
 #five-day {
   display: flex;
@@ -57,4 +65,8 @@ li {
   flex: 0 0 200px;
   padding: 20px;
   margin: 10px;
+}
+
+.card img {
+  width: 50px;
 }
