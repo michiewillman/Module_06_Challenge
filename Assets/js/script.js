@@ -3,19 +3,34 @@ var currentDate = dayjs().format('DD/MM/YYYY');
 var searchContainer = $('#search-form');
 var cityInput = $('#city-input');
 var todaysWeather = $('#weather-container');
-var fiveDay = $('five-day');
+var fiveDay = $('#five-day');
+
+function getCoordinates(city) {
+  var coordinateURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=6de9315fe02ad136b310b6c68d6d0811";
+
+  fetch (coordinateURL)
+  .then(function (response) {
+    if (response.ok) {
+      response.json().then(function (data) {
+        getWeather(data[0].lat, data[0].lon)
+      })
+    }
+  });
+}
 
 
-function getWeather(city) {
+
+function getWeather(lat, lon) {
   // Make a call to the api for weather information
-  var requestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
+  var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
 
-  fetch (requestURL)
+  fetch (forecastURL)
   .then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
         console.log(data);
         displayWeather(data);
+        // localStorage.setItem();
       });
     } else {
       alert('Error: ' + response.statusText);
@@ -23,30 +38,52 @@ function getWeather(city) {
   });
 }
 
+// <div class="card">
+//           <h5 class="card-date"></h5>
+//           <i class="card-icon"></i>
+//           <div class="card-details">
+//             <ul>
+//               <li class="card-temp"></li>
+//               <li class="card-wind"></li>
+//               <li class="card-humidity"></li>
+//             </ul>
+//           </div>
+// </div>
+
 function displayWeather(data) {
-  for (var i = 0; i < data.length; i++) {
+  
+  // // Display Weather Today
+  // $('#main-city').textContent = toString(city);
+  // $('#current-date').textContent = currentDate;
+  // $('.city-temp').textContent = "Temp:" + data[0].list.main.temp + "°F";
+  // $('.city-wind').textContent = "Wind" + data[0].list.wind.speed;
+  // $('.city-humidity').textContent = "Humidity" + data[0].list.main.humidity;
 
-    console.log(data[i].dt);
+  // Display 5-Day Forecast
+  for (var i = 0; i < data.list.length; i+=8) {
 
-    // Display current day weather in weatherContainer
-    $('#main-city').textContent = toString(city);
-    $('#current-date').textContent = currentDate;
-    $('.city-temp').textContent = "Temp:" + data[0].main.temp + "°F";
-    $('.city-wind').textContent = "Wind" + data[0].wind.speed;
-    $('.city-humidity').textContent = "Humidity" + data[0].main.humidity;
+    var card = $('<div>');
+    card.addClass('card');
+    var cardDate = $('<h5>');
+    var cardIcon = $('<i>');
+    var cardDetails = $('<div>');
+    var detailList = $('<ul>');
+    var cardTemp = $('<li>');
+    var cardWind = $('<li>');
+    var cardHumidity = $('<li>');
+    
+    fiveDay.append(card);
+    card.append(cardDate, cardIcon, cardDetails);
+    cardDetails.append(detailList);
+    detailList.append(cardTemp, cardWind, cardHumidity);
 
-    // Add icons 
-    var iconDiv = $('.card-icon');
-    iconDiv.textContent = data[i].weather.icon;
+    // Fill content for 5-day forecast cards
+    cardDate.text(data.list[i].dt);
+    cardIcon.text(data.list[i].weather.icon);
+    cardTemp.text("Temp:" + data.list[i].main.temp);
+    cardWind.text("Wind" + data.list[i].wind.speed);
+    cardHumidity.text("Humidity" + data.list[i].main.humidity);
 
-    if (i > 0) {
-      // Add values to 5 day weather cards
-      $('.card-date').textContent = data[i].dt;
-      $('.card-temp').textContent = "Temp:" + data[i].main.temp;
-      ('.card-wind').textContent = "Wind" + data[i].wind.speed;
-      $('.card-humidity').textContent = "Humidity" + data[i].main.humidity;
-    }
-    return;
   }
 }
 
@@ -56,27 +93,30 @@ function searchHandler(event) {
   var selectCity = $('#city-input').val();
 
   if (selectCity) {
-    getWeather(selectCity);
+    getCoordinates(selectCity);
+    // getWeather(selectCity);
 
     // TODO: clear the input form
   } else {
     alert('Please enter a valid city name.')
   }
 
-  // TODO: Save city search to local storage
+  // TODO: Stringify + Save city search to local storage
 
 
 }
 
-// function renderLastCity() {
-//   var saved = localStorage.getItem('savedCity');
-//   if (saved) {
+function renderLastCity() {
+  var saved = localStorage.getItem('savedCities');
+  if (saved) {
+    // parse
+    // run display weather
+    // 
+  } else {
+    // create empty array
+  }
 
-//   } else {
-//     return;
-//   }
-
-// }
+}
 
 // Event Listener on search button
 var searchBtn = $('.search-button');
