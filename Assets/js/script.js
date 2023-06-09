@@ -1,9 +1,6 @@
 // Global variables
-var currentDate = dayjs().format('DD/MM/YYYY');
 var searchContainer = $('#search-form');
 var cityInput = $('#city-input');
-var todaysWeather = $('#weather-container');
-var fiveDay = $('#five-day');
 
 function getCoordinates(city) {
   var coordinateURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=6de9315fe02ad136b310b6c68d6d0811";
@@ -12,25 +9,23 @@ function getCoordinates(city) {
   .then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        getWeather(data[0].lat, data[0].lon)
+        getToday(data[0].lat, data[0].lon);
+        getForecast(data[0].lat, data[0].lon);
       })
     }
   });
 }
 
+function getToday(lat, lon) {
+  var todayUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
 
-
-function getWeather(lat, lon) {
-  // Make a call to the api for weather information
-  var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
-
-  fetch (forecastURL)
+  fetch (todayUrl)
   .then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
         console.log(data);
-        displayWeather(data);
-        // localStorage.setItem();
+        displayToday(data);
+        // TODO: localStorage.setItem();
       });
     } else {
       alert('Error: ' + response.statusText);
@@ -38,30 +33,45 @@ function getWeather(lat, lon) {
   });
 }
 
-// <div class="card">
-//           <h5 class="card-date"></h5>
-//           <i class="card-icon"></i>
-//           <div class="card-details">
-//             <ul>
-//               <li class="card-temp"></li>
-//               <li class="card-wind"></li>
-//               <li class="card-humidity"></li>
-//             </ul>
-//           </div>
-// </div>
 
-function displayWeather(data) {
-  
+function getForecast(lat, lon) {
+  // Make a call to the api for weather information
+  var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
+
+  fetch (forecastUrl)
+  .then(function (response) {
+    if (response.ok) {
+      response.json().then(function (data) {
+        displayForecast(data);
+        // TODO: localStorage.setItem();
+      });
+    } else {
+      alert('Error: ' + response.statusText);
+    }
+  });
+}
+
+function displayToday(weather) {
   // // Display Weather Today
-  // $('#main-city').textContent = toString(city);
-  // $('#current-date').textContent = currentDate;
-  // $('.city-temp').textContent = "Temp:" + data[0].list.main.temp + "°F";
-  // $('.city-wind').textContent = "Wind" + data[0].list.wind.speed;
-  // $('.city-humidity').textContent = "Humidity" + data[0].list.main.humidity;
+  var currentDate = dayjs().format('DD/MM/YYYY');
+  $('#current-date').text = currentDate;
 
+  var iconImg = $('.card-icon').siblings();
+  var conditionIcon = weather.icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + conditionIcon + ".png";
+  iconImg.attr("src", iconUrl.toString()) // TODO: Get icon to work properly
+ 
+  $('#main-city').text("Today's Weather for " + weather.name);
+  $('#current-temp').text("Temp: " + Math.floor(weather.main.temp) + " °F");
+  $('#current-wind').text("Wind: " + Math.floor(weather.wind.speed) + " MPH");
+  $('#current-humidity').text("Humidity: " + Math.floor(weather.main.humidity));
+}
+
+function displayForecast(data) {
   // Display 5-Day Forecast
   for (var i = 0; i < data.list.length; i+=8) {
 
+    var fiveDay = $('#five-day');
     var card = $('<div>');
     card.addClass('card');
     var cardDate = $('<h5>');
@@ -78,31 +88,28 @@ function displayWeather(data) {
     detailList.append(cardTemp, cardWind, cardHumidity);
 
     // Fill content for 5-day forecast cards
-    cardDate.text(data.list[i].dt);
-    cardIcon.text(data.list[i].weather.icon);
-    cardTemp.text("Temp:" + data.list[i].main.temp);
-    cardWind.text("Wind" + data.list[i].wind.speed);
-    cardHumidity.text("Humidity" + data.list[i].main.humidity);
+    cardDate.text(data.list[i].dt); // TODO: Get timestamp in regular MM/DD/YYYY format
+    cardTemp.text("Temp: " + Math.floor(data.list[i].main.temp) + " °F");
+    cardWind.text("Wind: " + Math.floor(data.list[i].wind.speed) + " MPH");
+    cardHumidity.text("Humidity: " + Math.floor(data.list[i].main.humidity));
 
   }
 }
 
 function searchHandler(event) {
   event.preventDefault();
+  // TODO: Clear cards from the previous search to prevent stacking up
 
-  var selectCity = $('#city-input').val();
-
+  var selectCity = cityInput.val();
   if (selectCity) {
     getCoordinates(selectCity);
-    // getWeather(selectCity);
-
-    // TODO: clear the input form
-  } else {
-    alert('Please enter a valid city name.')
   }
 
   // TODO: Stringify + Save city search to local storage
 
+
+  // Clear input field
+  cityInput.val('');
 
 }
 
@@ -129,5 +136,3 @@ searchBtn.on("click", searchHandler);
 // HOW TO MAKE THIS APP BETTER IN THE FUTURE:
 // - Add an error message when a user doesn't input a city but clicks search button
 // - Add "previous day" & "next day" buttons on the bottom of today's forecast
-// - Add ZIPCODE option (convert to coordinates?)
-
