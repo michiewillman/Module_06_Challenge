@@ -8,8 +8,16 @@ function getCoordinates(city) {
   .then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        getToday(data[0].lat, data[0].lon);
-        getForecast(data[0].lat, data[0].lon);
+        // Save city name: coordinates to local storage
+        var lat = data[0].lat;
+        var lon = data[0].lon;
+        var coordinates = lat.toString() + " " + lon.toString();
+        localStorage.setItem(city, coordinates);
+
+        // Run functions to get today's weather and the 5-day forecast
+        getToday(lat, lon);
+        getForecast(lat, lon);
+
       })
     }
   });
@@ -24,7 +32,6 @@ function getToday(lat, lon) {
       response.json().then(function (data) {
         console.log(data);
         displayToday(data);
-        // TODO: localStorage.setItem();
       });
     } else {
       alert('Error: ' + response.statusText);
@@ -41,7 +48,6 @@ function getForecast(lat, lon) {
     if (response.ok) {
       response.json().then(function (data) {
         displayForecast(data);
-        // TODO: localStorage.setItem();
       });
     } else {
       alert('Error: ' + response.statusText);
@@ -49,9 +55,18 @@ function getForecast(lat, lon) {
   });
 }
 
+function formatDate(unix) {
+  var date = new Date(unix * 1000);
+  var day = date.getDate();
+  var month = date.getMonth() + 1; // Add 1 as month index starts from 0
+  var year = date.getFullYear();
+  var formattedDate = ('0' + month).slice(-2) + '/' + ('0' + day).slice(-2) + '/' + year;
+  return formattedDate;
+}
+
 function displayToday(todays) {
   // // Display Weather Today
-  var currentDate = dayjs().format('DD/MM/YYYY');
+  var currentDate = dayjs().format('MM/DD/YYYY');
   $('#current-date').text(currentDate);
  
   $('#main-city').text("Today's Weather for " + todays.name);
@@ -81,7 +96,8 @@ function displayForecast(data) {
     detailList.append(cardTemp, cardWind, cardHumidity);
 
     // Fill content for 5-day forecast cards
-    cardDate.text(data.list[i].dt); // TODO: Get timestamp in regular MM/DD/YYYY format
+    var unixDate = data.list[i].dt;
+    cardDate.text(formatDate(unixDate));
     cardIcon.attr("src", "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png")
     cardTemp.text("Temp: " + Math.floor(data.list[i].main.temp) + " °F");
     cardWind.text("Wind: " + Math.floor(data.list[i].wind.speed) + " MPH");
@@ -97,18 +113,15 @@ function searchHandler(event) {
   if (selectCity) {
     getCoordinates(selectCity);
   }
-
-  // TODO: Stringify + Save city search to local storage
-
-
   // Clear input field
   cityInput.val('');
 
 }
 
-function renderLastCity() {
-  var saved = JSON.parse(localStorage.getItem('savedCities'));
-  if (saved !== null) {
+function listSavedCities() {
+  var savedCities = JSON.parse(localStorage.getItem('cityList'));
+  if (savedCities !== null) {
+    console.log(savedCities);
     // run display weather
     for (i = 0; i < 6; i++) {
       
@@ -124,4 +137,4 @@ var searchBtn = $('.search-button');
 searchBtn.on("click", searchHandler);
 
 // Render last saved city search on page load
-// renderLastCity();
+// listSavedCities();
