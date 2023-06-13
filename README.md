@@ -14,6 +14,10 @@ Here is a mockup of my weather forecast application.
 
 ## Deployment
 
+[Click here to view the deployed application.](https://michiewillman.github.io/Module_06_Challenge/)
+
+[Click here to view my code repository.](https://github.com/michiewillman/Module_06_Challenge)
+
 # Server-Side APIs: Weather Dashboard Assignment Instructions
 
 ## Your Task
