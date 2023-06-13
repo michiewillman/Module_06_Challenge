@@ -112,14 +112,13 @@ function searchHandler(event) {
   if (selectCity) {
     getCoordinates(selectCity);
     updateSaved(selectCity);
-    updateSaved();
   }
   // Clear input field
   cityInput.val('');
 
 }
 
-function updateSaved() {
+function updateSaved(city) {
   if (!localStorage.getItem('saved-cities')) {
 
     var newList = [];
