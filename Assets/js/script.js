@@ -138,7 +138,7 @@ function updateSaved(city) {
   }
 
   if (city) {
-    if (savedCities.length < 10) {
+    if (savedCities.length < 6) {
       savedCities.unshift(city);
     } else {
       savedCities.pop();
@@ -150,6 +150,10 @@ function updateSaved(city) {
   // Clear out any remaining buttons on the page
   listContainer.empty();
 
+  // Show "recent searches" text
+  $('#recent-text').removeClass('d-none');
+
+  // Create a button for each city in the search history
   $.each(savedCities, function () {
     var cityButton = $("<button>", {
       text: this,

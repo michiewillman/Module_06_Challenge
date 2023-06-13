@@ -19,12 +19,18 @@ header {
   background: linear-gradient(270deg, rgba(223,142,38,1) 0%, rgba(200,38,38,1) 100%);
 }
 
-li {
+ul {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .row {
   margin: 10px;
+}
+
+.hide {
+  display: none;
 }
 
 /* Search Section */
@@ -43,6 +49,10 @@ li {
 
 .search-button:hover {
   background-color: #436f6f;
+}
+
+#recent-text {
+  text-align: center;
 }
 
 /* City History List Buttons */
