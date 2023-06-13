@@ -9,6 +9,7 @@ function getCoordinates(city) {
     .then(function (response) {
       if (response.ok) {
         response.json().then(function (data) {
+
           // Save city name: coordinates to local storage
           var lat = data[0].lat;
           var lon = data[0].lon;
@@ -20,6 +21,7 @@ function getCoordinates(city) {
       }
     });
 }
+
 // Pull in today's weather information
 function getToday(lat, lon) {
   var todayUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
@@ -28,7 +30,6 @@ function getToday(lat, lon) {
   .then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        console.log(data);
         displayToday(data);
       });
     } else {
@@ -36,8 +37,9 @@ function getToday(lat, lon) {
     }
   });
 }
+
 // Pull in forecast for following 5-Day Weather
-function getForecast(lat, lon) {
+function getForecast(lat, lon, selectCity) {
   // Make a call to the api for weather information
   var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
 
@@ -45,13 +47,14 @@ function getForecast(lat, lon) {
   .then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        displayForecast(data);
+        displayForecast(data, selectCity);
       });
     } else {
       alert('Error: ' + response.statusText);
     }
   });
 }
+
 // Convert unix timestamp to accessible date
 function formatDate(unix) {
   var date = new Date(unix * 1000);
@@ -61,8 +64,10 @@ function formatDate(unix) {
   var formattedDate = ('0' + month).slice(-2) + '/' + ('0' + day).slice(-2) + '/' + year;
   return formattedDate;
 }
+
 // Display today's weather
 function displayToday(todays) {
+  
   // // Display Weather Today
   var currentDate = dayjs().format('MM/DD/YYYY');
   $('#current-date').text(currentDate);
@@ -73,8 +78,12 @@ function displayToday(todays) {
   $('#current-wind').text("Wind: " + Math.floor(todays.wind.speed) + " MPH");
   $('#current-humidity').text("Humidity: " + Math.floor(todays.main.humidity));
 }
+
 // Display 5-Day Forecast weather cards
 function displayForecast(data) {
+  // Clear the existing forecast cards
+  $('#five-day').empty();
+
   // Display 5-Day Forecast
   for (var i = 0; i < data.list.length; i+=8) {
     var fiveDay = $('#five-day');
@@ -102,6 +111,7 @@ function displayForecast(data) {
     cardHumidity.text("Humidity: " + Math.floor(data.list[i].main.humidity));
   }
 }
+
 // Handle submit button click + input --> run functions to get coords & update saved history
 function searchHandler(event) {
   event.preventDefault();
