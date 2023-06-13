@@ -1,7 +1,6 @@
 // Global variables
 var cityInput = $('#city-input');
 var listContainer = $('#city-list');
-var cityArray;
 
 function getCoordinates(city) {
   var coordinateURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=6de9315fe02ad136b310b6c68d6d0811";
@@ -21,7 +20,7 @@ function getCoordinates(city) {
       }
     });
 }
-
+// Pull in today's weather information
 function getToday(lat, lon) {
   var todayUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
 
@@ -37,7 +36,7 @@ function getToday(lat, lon) {
     }
   });
 }
-
+// Pull in forecast for following 5-Day Weather
 function getForecast(lat, lon) {
   // Make a call to the api for weather information
   var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=6de9315fe02ad136b310b6c68d6d0811&units=imperial";
@@ -53,7 +52,7 @@ function getForecast(lat, lon) {
     }
   });
 }
-
+// Convert unix timestamp to accessible date
 function formatDate(unix) {
   var date = new Date(unix * 1000);
   var day = date.getDate();
@@ -62,7 +61,7 @@ function formatDate(unix) {
   var formattedDate = ('0' + month).slice(-2) + '/' + ('0' + day).slice(-2) + '/' + year;
   return formattedDate;
 }
-
+// Display today's weather
 function displayToday(todays) {
   // // Display Weather Today
   var currentDate = dayjs().format('MM/DD/YYYY');
@@ -74,7 +73,7 @@ function displayToday(todays) {
   $('#current-wind').text("Wind: " + Math.floor(todays.wind.speed) + " MPH");
   $('#current-humidity').text("Humidity: " + Math.floor(todays.main.humidity));
 }
-
+// Display 5-Day Forecast weather cards
 function displayForecast(data) {
   // Display 5-Day Forecast
   for (var i = 0; i < data.list.length; i+=8) {
@@ -103,7 +102,7 @@ function displayForecast(data) {
     cardHumidity.text("Humidity: " + Math.floor(data.list[i].main.humidity));
   }
 }
-
+// Handle submit button click + input --> run functions to get coords & update saved history
 function searchHandler(event) {
   event.preventDefault();
   // TODO: Clear cards from the previous search to prevent stacking up
@@ -118,36 +117,42 @@ function searchHandler(event) {
 
 }
 
+// Update saved history of city searches
 function updateSaved(city) {
-  if (!localStorage.getItem('saved-cities')) {
-
-    var newList = [];
-    localStorage.setItem("saved-cities", newList);
+  // Check for an item named saved-cities in local storage
+  var savedCities = localStorage.getItem("saved-cities");
+  if (savedCities) {
+    savedCities = JSON.parse(savedCities);
   } else {
-    cityArray = localStorage.getItem("saved-cities");
-  }
-  
-  if (cityArray.length < 10) {
-    cityArray.unshift(city);
-  } else {
-    cityArray.pop();
-    cityArray.unshift(city);
-    localStorage.setItem("saved-cities", cityArray);
+    savedCities = [];
   }
 
-  $.each(cityArray, function() {
-    var cityButton = $('<button>', {
-      text: $(this),
+  if (city) {
+    if (savedCities.length < 10) {
+      savedCities.unshift(city);
+    } else {
+      savedCities.pop();
+      savedCities.unshift(city);
+    }
+    localStorage.setItem("saved-cities", JSON.stringify(savedCities));
+  }
+
+  // Clear out any remaining buttons on the page
+  listContainer.empty();
+
+  $.each(savedCities, function () {
+    var cityButton = $("<button>", {
+      text: this,
       class: "city-button",
-      click: getCoordinates($(this)),
+      click: function () {
+        getCoordinates(this.innerText);
+      },
     });
 
     listContainer.append(cityButton);
-  })
+  });
 }
 
 // Event Listener on search button
 var searchBtn = $('.search-button');
 searchBtn.on("click", searchHandler);
-
-updateSaved();
