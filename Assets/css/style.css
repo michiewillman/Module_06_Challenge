@@ -23,6 +23,10 @@ li {
   list-style: none;
 }
 
+.row {
+  margin: 10px;
+}
+
 /* Search Section */
 #city-input {
   width: 140px;
