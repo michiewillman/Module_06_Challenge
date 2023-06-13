@@ -20,12 +20,14 @@
           <input id="city-input" type="text">
           <button class="search-button my-2">Search</button>
         </div>
+        <!-- Saved city history from local storage -->
         <div id="city-list"></div>
       </div>
 
       <div class="col-12 col-md-9 col-lg-9">
         <div id="city-info" class="m-3 p-3">
-          <!-- TODO: Use dayjs to grab the current date & time -->
+          <!-- Use dayjs to grab the current date & time -->
+          <!-- Display weather for current day -->
           <h4 id="main-city"></h4>
           <p id="current-date"></p>
           <img src="" alt="" id="current-icon">
@@ -35,6 +37,8 @@
             <li id="current-humidity"></li>
           </ul>
         </div>  
+        <!-- Display weather forecast for following 5 Days -->
+        <!-- Dynamically pull in card information -->
         <div id="five-day"></div>
       </div>
     </div>

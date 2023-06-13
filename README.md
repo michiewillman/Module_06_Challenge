@@ -1,6 +1,8 @@
 # Module_06_Challenge
 
-## Desription
+## Description
+
+This application was created as a response to a bootcamp assignment on server-side APIs. The weather forecasting application allows a user to input their city, and be presented with the current weather conditions, as well as a 5-Day forecast below. The code in this project utilizes Bootstrap CSS framework, JQuery, and Dayjs.
 
 See below for the full assignment instructions.
 
