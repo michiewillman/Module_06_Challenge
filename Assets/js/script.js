@@ -13,7 +13,6 @@ function getCoordinates(city) {
           // Save city name: coordinates to local storage
           var lat = data[0].lat;
           var lon = data[0].lon;
-
           // Run functions to get today's weather and the 5-day forecast
           getToday(lat, lon);
           getForecast(lat, lon);
