@@ -3,7 +3,7 @@ var cityInput = $('#city-input');
 var listContainer = $('#city-list');
 
 function getCoordinates(city) {
-  var coordinateURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=6de9315fe02ad136b310b6c68d6d0811";
+  var coordinateURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=6de9315fe02ad136b310b6c68d6d0811";
 
   fetch(coordinateURL)
     .then(function (response) {
