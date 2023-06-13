@@ -45,6 +45,22 @@ li {
   background-color: #436f6f;
 }
 
+/* City History List Buttons */
+.city-button {
+  width: 100%;
+  height: auto;
+  padding: 5px;
+  margin: 10px 0;
+  color: var(--light);
+  border: none;
+  border-radius: 5px;
+  background-color: var(--primary);
+}
+
+.city-button:hover {
+  background-color: var(--secondary);
+}
+
 /* Current Day - Main Weather Section */
 #city-info {
   color: var(--light);
