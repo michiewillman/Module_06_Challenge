@@ -1,6 +1,7 @@
 // Global variables
 var cityInput = $('#city-input');
-var cityList = [];
+var listContainer = $('#city-list');
+var cityArray;
 
 function getCoordinates(city) {
   var coordinateURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=6de9315fe02ad136b310b6c68d6d0811";
@@ -12,25 +13,10 @@ function getCoordinates(city) {
           // Save city name: coordinates to local storage
           var lat = data[0].lat;
           var lon = data[0].lon;
-          var coordinates = lat.toString() + " " + lon.toString();
-          localStorage.setItem(city, coordinates);
-
-          // Update the cityList array and localStorage
-          // var index = cityList.indexOf(city);
-          // if (index !== -1) {
-          //   cityList.splice(index, 1); // Remove existing entry if already present
-          // }
-          cityList.unshift(city); // Add the current city at the beginning of the array
-          if (cityList.length > 6) {
-            cityList.pop(); // Remove the last city if the array exceeds 6 elements
-          }
-          localStorage.setItem('cityList', JSON.stringify(cityList)); // Update the cityList in localStorage
 
           // Run functions to get today's weather and the 5-day forecast
           getToday(lat, lon);
           getForecast(lat, lon);
-          renderSavedCities(); // Update the city list display
-
         })
       }
     });
@@ -125,29 +111,44 @@ function searchHandler(event) {
   var selectCity = cityInput.val();
   if (selectCity) {
     getCoordinates(selectCity);
+    updateSaved(selectCity);
+    updateSaved();
   }
   // Clear input field
   cityInput.val('');
 
 }
 
-function renderSavedCities() {
-  var savedCities = JSON.parse(localStorage.getItem('cityList')) || [];
-  console.log(localStorage);
-  var listContainer = $('#city-list');
-  listContainer.empty(); // Clear previous city list
+function updateSaved() {
+  if (!localStorage.getItem('saved-cities')) {
 
-  // Run display weather on each saved
-  for (var i = savedCities.length - 1; i >= 0; i--) {
-    var listedCity = $('<li>');
-    listContainer.append(listedCity);
-    listedCity.text(savedCities[i]);
+    var newList = [];
+    localStorage.setItem("saved-cities", newList);
+  } else {
+    cityArray = localStorage.getItem("saved-cities");
   }
+  
+  if (cityArray.length < 10) {
+    cityArray.unshift(city);
+  } else {
+    cityArray.pop();
+    cityArray.unshift(city);
+    localStorage.setItem("saved-cities", cityArray);
+  }
+
+  $.each(cityArray, function() {
+    var cityButton = $('<button>', {
+      text: $(this),
+      class: "city-button",
+      click: getCoordinates($(this)),
+    });
+
+    listContainer.append(cityButton);
+  })
 }
 
 // Event Listener on search button
 var searchBtn = $('.search-button');
 searchBtn.on("click", searchHandler);
 
-// Render last saved city search on page load
-renderSavedCities()
+updateSaved();
