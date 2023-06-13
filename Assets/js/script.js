@@ -104,7 +104,7 @@ function displayForecast(data) {
     // Fill content for 5-day forecast cards
     var unixDate = data.list[i].dt;
     cardDate.text(formatDate(unixDate));
-    cardIcon.attr("src", "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png")
+    cardIcon.attr("src", "https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png")
     cardTemp.text("Temp: " + Math.floor(data.list[i].main.temp) + " °F");
     cardWind.text("Wind: " + Math.floor(data.list[i].wind.speed) + " MPH");
     cardHumidity.text("Humidity: " + Math.floor(data.list[i].main.humidity));
