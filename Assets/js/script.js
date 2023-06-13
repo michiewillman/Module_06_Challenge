@@ -72,7 +72,7 @@ function displayToday(todays) {
   $('#current-date').text(currentDate);
  
   $('#main-city').text("Today's Weather for " + todays.name);
-  $('#current-icon').attr("src", "http://openweathermap.org/img/wn/" + todays.weather[0].icon + "@2x.png");
+  $('#current-icon').attr("src", "https://openweathermap.org/img/wn/" + todays.weather[0].icon + "@2x.png");
   $('#current-temp').text("Temp: " + Math.floor(todays.main.temp) + " °F");
   $('#current-wind').text("Wind: " + Math.floor(todays.wind.speed) + " MPH");
   $('#current-humidity').text("Humidity: " + Math.floor(todays.main.humidity));
